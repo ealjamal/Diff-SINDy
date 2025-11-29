@@ -19,14 +19,14 @@ class Trainer:
                  coeffs_update_per_epoch=10,
                  lambda_pde_warmup_epochs=1000,
                  max_lambda_pde=1.0,
-                 sol_warmup_lambda_weighting=True,
-                 fit_lambda_weighting=True,
+                 sol_warmup_loss_weighting=True,
+                 fit_loss_weighting=True,
                  lambda_ic=1.0,
                  lambda_bc=1.0,
                  lambda_data=1.0,
                  lambda_pde=1.0,
                  lambda_alpha=0.9,
-                 verbose=False):
+                 verbosity=0):
         
         self.lhs_deriv = lhs_deriv
         self.deriv_library = deriv_library
@@ -43,14 +43,14 @@ class Trainer:
         self.coeffs_update_per_epoch = coeffs_update_per_epoch
         self.lambda_pde_warmup_epochs = lambda_pde_warmup_epochs
         self.max_lambda_pde = max_lambda_pde
-        self.sol_warmup_lambda_weighting = sol_warmup_lambda_weighting
-        self.fit_lambda_weighting = fit_lambda_weighting
+        self.sol_warmup_loss_weighting = sol_warmup_loss_weighting
+        self.fit_loss_weighting = fit_loss_weighting
         self.lambda_ic = lambda_ic
         self.lambda_bc = lambda_bc
         self.lambda_data = lambda_data
         self.lambda_pde = lambda_pde
         self.lambda_alpha = lambda_alpha
-        self.verbose = verbose
+        self.verbosity = verbosity
         self.coeffs_input_idxs = [input_names.index(coeffs_input_name) for coeffs_input_name in coeffs_input_names if coeffs_input_name != 'u']
 
     def prepare_sol_model(self, sol_model):
@@ -77,8 +77,8 @@ class Trainer:
         loss_bc = F.mse_loss(u_pred_bc, self.U_bc)
         loss_data = F.mse_loss(u_pred_data, self.U_data)
         
-        if self.sol_warmup_lambda_weighting:
-            lambda_ic, lambda_bc = lambda_weighting_data_wang(sol_model=self.sol_model,
+        if self.sol_warmup_loss_weighting:
+            lambda_ic, lambda_bc = loss_weighting_data_wang(sol_model=self.sol_model,
                                                               loss_ic=loss_ic,
                                                               loss_bc=loss_bc,
                                                               loss_data=loss_data,
@@ -123,8 +123,8 @@ class Trainer:
 
         loss_pde = F.mse_loss(pde, lhs_d)
 
-        if self.fit_lambda_weighting:
-            lambda_ic, lambda_bc, lambda_data = lambda_weighting_pde_wang(sol_model=self.sol_model,
+        if self.fit_loss_weighting:
+            lambda_ic, lambda_bc, lambda_data = loss_weighting_pde_wang(sol_model=self.sol_model,
                                                                           loss_ic=loss_ic,
                                                                           loss_bc=loss_bc,
                                                                           loss_data=loss_data,
@@ -197,7 +197,7 @@ class Trainer:
         for warmup_epoch in range(self.sol_warmup_n_epochs):
             loss_total, loss_ic, loss_bc, loss_data, lambda_ic, lambda_bc, lambda_data = self.sol_warmup_step(lambda_ic, lambda_bc)
 
-            if self.verbose and (warmup_epoch + 1) % 100 == 0:
+            if self.verbosity > 0 and (warmup_epoch + 1) % self.verbosity == 0:
                 print(f"[SolWarmup] Ep {warmup_epoch + 1}/{self.sol_warmup_n_epochs} Total={loss_total:.6e}, "
                         f"IC={loss_ic:.6e}, BC={loss_bc:.6e}, Data={loss_data:.6e}, "
                         f"L_IC={lambda_ic:.6e}, L_BC={lambda_bc:.6e}, L_data={lambda_data:.6e}")
@@ -221,10 +221,10 @@ class Trainer:
                 for _ in range(self.coeffs_update_per_epoch):
                     _ = self.coeffs_step()
 
-                if self.verbose and (epoch + 1) % 100 == 0:
-                    print(f"[Train] Ep {epoch + 1}/{self.n_epochs} Total={loss_total:.6e}, "
-                            f"IC={loss_ic:.6e}, BC={loss_bc:.6e}, Data={loss_data:.6e}, PDE={loss_pde:.6e}, "
-                            f"L_IC={lambda_ic:.6e}, L_BC={lambda_bc:.6e}, L_data={lambda_data:.6e}, L_pde={lambda_pde:.6e}")
+            if self.verbosity > 0 and (epoch + 1) % self.verbosity == 0:
+                print(f"[Train] Ep {epoch + 1}/{self.n_epochs} Total={loss_total:.6e}, "
+                        f"IC={loss_ic:.6e}, BC={loss_bc:.6e}, Data={loss_data:.6e}, PDE={loss_pde:.6e}, "
+                        f"L_IC={lambda_ic:.6e}, L_BC={lambda_bc:.6e}, L_data={lambda_data:.6e}, L_pde={lambda_pde:.6e}")
 
         res = dict()
         res['total_losses'] = total_losses

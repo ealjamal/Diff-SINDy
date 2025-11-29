@@ -13,7 +13,7 @@ def grad_norm(loss,
 
   return torch.sqrt(sum(g.pow(2).sum() for g in grads)) + eps
 
-def lambda_weighting_data_wang(sol_model,
+def loss_weighting_data_wang(sol_model,
                                loss_ic,
                                loss_bc,
                                loss_data,
@@ -35,7 +35,7 @@ def lambda_weighting_data_wang(sol_model,
 
     return lambda_ic.detach(), lambda_bc.detach()
 
-def lambda_weighting_pde_wang(sol_model,
+def loss_weighting_pde_wang(sol_model,
                               loss_ic,
                               loss_bc,
                               loss_data,
