@@ -215,13 +215,6 @@ class Trainer:
 
                 (loss_total, loss_ic, loss_bc, loss_data, loss_pde, 
                 lambda_ic, lambda_bc, lambda_data, lambda_pde) = self.sol_step(lambda_ic, lambda_bc, lambda_data, lambda_pde)
-                
-                with torch.no_grad():
-                    total_losses.append(loss_total)
-                    ic_losses.append(loss_ic)
-                    bc_losses.append(loss_bc)
-                    data_losses.append(loss_data)
-                    pde_losses.append(loss_pde)
 
             for param in self.sol_model.parameters():
                 param.requires_grad_(False)
@@ -231,6 +224,13 @@ class Trainer:
             self.coeffs_model.train()
             for _ in range(self.coeffs_update_per_epoch):
                 _ = self.coeffs_step()
+
+            with torch.no_grad():
+                total_losses.append(loss_total)
+                ic_losses.append(loss_ic)
+                bc_losses.append(loss_bc)
+                data_losses.append(loss_data)
+                pde_losses.append(loss_pde)
 
             if self.verbosity > 0 and (epoch + 1) % self.verbosity == 0:
                 print(f"[Train] Ep {epoch + 1}/{self.n_epochs} Total={loss_total:.6e}, "
