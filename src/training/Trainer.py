@@ -203,7 +203,13 @@ class Trainer:
                         f"L_IC={lambda_ic:.6e}, L_BC={lambda_bc:.6e}, L_data={lambda_data:.6e}")
 
         for epoch in range(self.n_epochs):
+            for param in self.sol_model.parameters():
+                param.requires_grad_(True)
+            for param in self.coeffs_model.parameters():
+                param.requires_grad_(False)
+            
             self.sol_model.train()
+            self.coeffs_model.eval()
             for _ in range(self.sol_update_per_epoch):
                 lambda_pde = lambda_schedule(epoch, self.lambda_pde_warmup_epochs, self.max_lambda_pde)
 
@@ -217,9 +223,14 @@ class Trainer:
                     data_losses.append(loss_data)
                     pde_losses.append(loss_pde)
 
-                self.sol_model.eval()
-                for _ in range(self.coeffs_update_per_epoch):
-                    _ = self.coeffs_step()
+            for param in self.sol_model.parameters():
+                param.requires_grad_(False)
+            for param in self.coeffs_model.parameters():
+                param.requires_grad_(True)
+            self.sol_model.eval()
+            self.coeffs_model.train()
+            for _ in range(self.coeffs_update_per_epoch):
+                _ = self.coeffs_step()
 
             if self.verbosity > 0 and (epoch + 1) % self.verbosity == 0:
                 print(f"[Train] Ep {epoch + 1}/{self.n_epochs} Total={loss_total:.6e}, "
