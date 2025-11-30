@@ -140,7 +140,7 @@ class Trainer:
     
     def sol_warmup_step(self, lambda_ic, lambda_bc):
         self.sol_optimizer.zero_grad()
-        loss_total, loss_ic, loss_bc, loss_data, lambda_ic, lambda_bc, lambda_data = self._compute_warmup_losses(lambda_ic, lambda_bc)
+        loss_total, loss_ic, loss_bc, loss_data, lambda_ic, lambda_bc, lambda_data = self._compute_warmup_losses(lambda_ic, lambda_bc, self.lambda_data)
         
         loss_total.backward()
         self.sol_optimizer.step()
