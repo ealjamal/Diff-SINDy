@@ -1140,9 +1140,12 @@ input, select, textarea {
 			-ms-transition-delay: 0.75s;
 			transition-delay: 0.75s;
 			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../images/overlay.png");
-			background-size: auto, 256px 256px;
-			background-position: center, center;
-			background-repeat: no-repeat, repeat;
+			background-size: auto,
+ 256px 256px;
+			background-position: center,
+ center;
+			background-repeat: no-repeat,
+ repeat;
 			z-index: 2;
 		}
 
@@ -1656,3 +1659,38 @@ input, select, textarea {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+
+.logo-img {
+    width: 350px;
+    height: 350px;
+    border-radius: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px;
+}
+
+#developers {
+    text-align: center;
+    padding: 2em 0;
+}
+
+.developer-card {
+    display: inline-block;
+    margin: 1em;
+    text-align: center;
+}
+
+.developer-img {
+    width: 150px;  /* adjust size as needed */
+    height: 150px; /* make square for consistency */
+    border-radius: 50%; /* makes it a circle */
+    object-fit: cover;  /* keeps image from stretching */
+    border: 2px solid #ccc; /* optional border */
+}
+
+.developer-name {
+    margin-top: 0.5em;
+    font-weight: bold;
+    font-size: 1.2em;
+}

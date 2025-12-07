@@ -4,91 +4,139 @@
     Customized for Diff-SINDy
 -->
 <html>
-    <head>
-        <title>Diff-SINDy</title>
-        <meta charset="utf-8" />
-        <meta name="description" content="Diff-SINDy: A differentiable framework for discovering partial differential equations from data">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="assets/css/main.css" />
-        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    </head>
-    <body class="is-preload">
+<head>
+    <title>Diff-SINDy</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Diff-SINDy: A differentiable framework for discovering partial differential equations from data">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
-        <!-- Wrapper -->
-        <div id="wrapper">
+    <style>
+        /* Header Logo */
+        .logo-img {
+            width: 300px;          /* large logo */
+            height: 300px;
+            border-radius: 50%;    /* circular */
+            object-fit: contain;   /* prevents cropping */
+            display: block;
+            margin: 0 auto 10px auto;  /* spacing below logo */
+            background-color: #fff;     /* optional: circle background */
+            padding: 10px;              /* optional padding */
+        }
 
-            <!-- Header -->
-            <header id="header">
-                <div class="logo">
-                    <span class="icon fa-gem"></span>
+        /* Header Text */
+        .header-text h1 {
+            font-size: 5rem;       /* big title */
+            margin: 10px 0 5px 0;
+        }
+
+        .header-text p {
+            font-size: 3rem;       /* much bigger description */
+            margin: 0;             /* no extra spacing below title */
+            line-height: 1.4;      /* improves readability */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo-img {
+                width: 200px;
+                height: 200px;
+            }
+            .header-text h1 {
+                font-size: 3rem;
+            }
+            .header-text p {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <div class="content" style="text-align:center;">
+                <img src="images/logo.png" alt="Diff-SINDy Logo" class="logo-img">
+                <div class="header-text">
+                    <h1>Diff-SINDy</h1>
+					<p style="font-size: 1.2em;">A Differentiable Framework for Discovering Partial Differential Equations from Data</p>
                 </div>
-                <div class="content">
-                    <div class="inner">
-                        <h1>Diff-SINDy</h1>
-                        <p>A differentiable framework for discovering partial differential equations from data</p>
-                    </div>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#intro">Intro</a></li>
-                        <li><a href="#developers">Developers</a></li>
-                        <li><a href="#github">GitHub</a></li>
-                    </ul>
-                </nav>
-            </header>
-
-            <!-- Main -->
-            <div id="main">
-
-                <!-- Intro -->
-                <article id="intro">
-                    <h2 class="major">Welcome</h2>
-                    <span class="image main"><img src="images/pic01.jpg" alt="Diff-SINDy Hero Image" /></span>
-                    <p>Diff-SINDy is a differentiable framework for discovering partial differential equations from data. 
-                    This project combines sparse identification of nonlinear dynamics with differentiable programming.</p>
-                </article>
-
-                <!-- Developers -->
-                <article id="developers">
-                    <h2 class="major">Developers</h2>
-                    <div class="devs" style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; margin-top:20px;">
-                        <div class="dev" style="text-align:center;">
-                            <img src="images/alice.jpg" alt="Alice Smith" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
-                            <p>Alice Smith</p>
-                        </div>
-                        <div class="dev" style="text-align:center;">
-                            <img src="images/bob.jpg" alt="Bob Johnson" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
-                            <p>Bob Johnson</p>
-                        </div>
-                        <!-- Add more developers here -->
-                    </div>
-                </article>
-
-                <!-- GitHub -->
-                <article id="github">
-                    <h2 class="major">GitHub Repository</h2>
-                    <p>View the main branch of Diff-SINDy:</p>
-                    <a href="https://github.com/ealjamal/Diff-SINDy" class="button primary">GitHub Repo</a>
-                </article>
-
             </div>
+            <nav>
+                <ul>
+                    <li><a href="#intro">Intro</a></li>
+                    <li><a href="#developers">Developers</a></li>
+                    <li><a href="#github">GitHub</a></li>
+                </ul>
+            </nav>
+        </header>
 
-            <!-- Footer -->
-            <footer id="footer">
-                <p>&copy; 2025 Diff-SINDy. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-            </footer>
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Intro -->
+            <article id="intro">
+                <h2 class="major">Welcome</h2>
+                <span class="image main"><img src="images/pic01.jpg" alt="Diff-SINDy Hero Image" /></span>
+                <p>Diff-SINDy is a differentiable framework for discovering partial differential equations from data. 
+                This project combines sparse identification of nonlinear dynamics with differentiable programming.</p>
+            </article>
+
+            <!-- Developers -->
+			<article id="developers">
+				<h2 class="major">Developers</h2>
+				<div class="devs" style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; margin-top:20px;">
+					<div class="dev" style="text-align:center;">
+						<a href="https://github.com/ealjamal" target="_blank" style="text-decoration:none; color:inherit;">
+							<img src="images/EA.jpg" alt="Alice Smith" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+							<p>Eddie Aljamal</p>
+						</a>
+					</div>
+					<div class="dev" style="text-align:center;">
+						<a href="https://github.com/tbaer-umich" target="_blank" style="text-decoration:none; color:inherit;">
+							<img src="images/EA.jpg" alt="Thomas M. Baer" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+							<p>Thomas M. Baer</p>
+						</a>
+					</div>
+					<div class="dev" style="text-align:center;">
+						<a href="https://github.com/devloom" target="_blank" style="text-decoration:none; color:inherit;">
+							<img src="images/DL.jpg" alt="Devon Looms PhD" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+							<p>Devon Loomis PhD</p>
+						</a>
+					</div>
+					<!-- Add more developers here -->
+				</div>
+			</article>
+
+
+            <!-- GitHub -->
+            <article id="github">
+                <h2 class="major">GitHub Repository</h2>
+                <p>View the main branch of Diff-SINDy:</p>
+                <a href="https://github.com/ealjamal/Diff-SINDy" class="button primary">GitHub Repo</a>
+            </article>
 
         </div>
 
-        <!-- BG -->
-        <div id="bg"></div>
+        <!-- Footer -->
+        <footer id="footer">
+            <p>&copy; 2025 Diff-SINDy. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+        </footer>
 
-        <!-- Scripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/browser.min.js"></script>
-        <script src="assets/js/breakpoints.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <script src="assets/js/main.js"></script>
+    </div>
 
-    </body>
+    <!-- BG -->
+    <div id="bg"></div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
 </html>
