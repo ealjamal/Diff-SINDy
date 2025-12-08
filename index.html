@@ -12,29 +12,43 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
+    <!-- MathJax -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          packages: {'[+]': ['ams']}
+        }
+      };
+    </script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
     <style>
         /* Header Logo */
         .logo-img {
-            width: 300px;          /* large logo */
+            width: 300px;          
             height: 300px;
-            border-radius: 50%;    /* circular */
-            object-fit: contain;   /* prevents cropping */
+            border-radius: 50%;    
+            object-fit: contain;   
             display: block;
-            margin: 0 auto 10px auto;  /* spacing below logo */
-            background-color: #fff;     /* optional: circle background */
-            padding: 10px;              /* optional padding */
+            margin: 0 auto 10px auto;  
+            background-color: #fff;     
+            padding: 10px;              
         }
 
         /* Header Text */
         .header-text h1 {
-            font-size: 5rem;       /* big title */
+            font-size: 5rem;       
             margin: 10px 0 5px 0;
         }
 
         .header-text p {
-            font-size: 3rem;       /* much bigger description */
-            margin: 0;             /* no extra spacing below title */
-            line-height: 1.4;      /* improves readability */
+            font-size: 3rem;       
+            margin: 0;             
+            line-height: 1.4;      
         }
 
         /* Responsive adjustments */
@@ -62,7 +76,7 @@
                 <img src="images/logo.png" alt="Diff-SINDy Logo" class="logo-img">
                 <div class="header-text">
                     <h1>Diff-SINDy</h1>
-					<p style="font-size: 1.2em;">A Differentiable Framework for Discovering Partial Differential Equations from Data</p>
+                    <p style="font-size: 1.2em;">A Differentiable Framework for Discovering Partial Differential Equations from Data</p>
                 </div>
             </div>
             <nav>
@@ -77,45 +91,132 @@
         <!-- Main -->
         <div id="main">
 
-            <!-- Intro -->
+            <!-- About -->
             <article id="about">
-                <h2 class="major">Welcome</h2>
+                <h2 class="major">What is Diff-SINDy?</h2>
+                <span class="image main"><img src="images/Diff-SINDy-feature-comparison.png" alt="Diff-SINDy Hero Image" /></span>
+                <p><strong>Diff-SINDy</strong> is a fully differentiable framework for discovering partial differential equations 
+                    (PDEs) from data. Rather than constructing a large functional library, Diff-SINDy introduces 
+                    a <em>derivative library</em>&mdash;a curated set of candidate temporal and spatial derivatives&mdash;
+                    reflecting the fact that most PDEs involve only a small number of derivatives of relatively modest order.</p>
+                <p>The method decouples the workflow into two complementary stages:</p>
+                <ol>
+                <li><strong>Differentiable training</strong>, in which a neural network approximates the solution field and 
+                    automatic differentiation (AD) is used to compute all necessary derivatives;</li>
+                <li><strong>Symbolic regression</strong>, in which the underlying PDE is identified using the evolutionary 
+                    search algorithm implemented in <strong>PySR</strong>.</li>
+                </ol>
+
+                <p>By leveraging AD instead of discrete estimators such as finite-difference schemes, Diff-SINDy obtains 
+                    smooth and accurate derivative information. Parsimony is enforced through a SINDy-style sparsification 
+                    strategy using <strong>Sequentially Thresholded Ridge Regression (STRidge)</strong>. The overall approach 
+                    requires <strong>no pretraining</strong> and enables end-to-end discovery of compact, interpretable PDEs.</p>
+
                 <span class="image main"><img src="images/Diff-SINDy-pipeline.png" alt="Diff-SINDy Hero Image" /></span>
-                <p>Diff-SINDy is a differentiable framework for discovering partial differential equations from data. 
-                This project combines sparse identification of nonlinear dynamics with differentiable programming.</p>
+                <p>Suppose you have an <em>unknown</em>&mdash;PDE:</p>
+
+                <p>
+                $$
+                \begin{aligned}
+                u_t = {} & f_0(x,t,u) + f_1(x,t,u)\,u_x + f_2(x,t,u)\,u_{xx} \\
+                        & + f_3(x,t,u)\,u_{tt} + \dots + f_j(x,t,u)\,u_{xxx} + \dots
+                \end{aligned}
+                $$
+                </p>
+
+                <p>or</p>
+
+                <p>
+                $$
+                \begin{aligned}
+                u_{tt} = {} & g_0(x,t,u) + g_1(x,t,u)\,u_x + g_2(x,t,u)\,u_t \\
+                            & + g_3(x,t,u)\,u_{xx} + \dots + g_j(x,t,u)\,u_{xxx} + \dots
+                \end{aligned}
+                $$
+                </p>
+
+
+                <p>
+                <strong>
+                The goal of Diff-SINDy is to learn symbolic expressions for the coefficient functions 
+                $f_i(x,t,u)$ or $g_i(x,t,u)$, producing a closed-form, parsimonious PDE that explains the data.
+                </strong>
+                </p>
+
+                <p>
+                <strong>(a)</strong> The observed solution of the <em>unknown</em>&mdash;PDE is approximated using 
+                a deep neural network (DNN) defined on the spatiotemporal domain using random Gaussian sinusoidal features. 
+                Automatic differentiation (AD) is applied to this learned solution to construct a derivative library 
+                $\mathbf{D}$. Sparsity is introduced through a learnable binary mask represented by a matrix 
+                $\boldsymbol{\Lambda}$ whose continuous parameters are thresholded to 0 or 1 to indicate inactive and active derivatives.
+                </p>
+
+                <p>
+                <strong>(b)</strong> The PDE coefficients are approximated using a user-defined MLP architecture.
+                Options include: a single MLP predicting all coefficients, a multi-task MLP with a shared backbone and 
+                separate heads, or one neural network per coefficient. This defines the coefficient library 
+                $\mathbf{F}$ at the collocation points.
+                </p>
+
+                <p>
+                <strong>(c)</strong> Training alternates between two stages:
+                </p>
+
+                <ul>
+                <li>
+                    <strong>Stage 1 (Solution Network Training):</strong>  
+                    Train the solution network using initial condition (IC), boundary condition (BC), and interior data losses 
+                    with gradient balancing, while freezing both the sparsity mask and coefficient network.  
+                    The PDE loss—constructed from the derivative library, coefficient library, and sparsity mask—is gradually 
+                    introduced by increasing its weight $\lambda_{\rm PDE}$ from 0 to 1 over training.
+                </li>
+
+                <li>
+                    <strong>Stage 2 (Coefficient + Sparsity Optimization):</strong>  
+                    Optimize the coefficient network and sparsity mask using the PDE loss, with sparsity enforced through 
+                    Sequentially Thresholded Ridge Regression (STRidge) and an added regularization term.
+                </li>
+                </ul>
+
+                <p>
+                These stages are alternated throughout training for stability. A warm-up phase (training the solution network 
+                without PDE loss at first) is recommended.
+                </p>
+
             </article>
 
             <!-- Developers -->
-			<article id="developers">
-				<h2 class="major">Developers</h2>
-				<div class="devs" style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; margin-top:20px;">
-					<div class="dev" style="text-align:center;">
-						<a href="https://github.com/ealjamal" target="_blank" style="text-decoration:none; color:inherit;">
-							<img src="images/EA.jpg" alt="Alice Smith" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
-							<p>Eddie Aljamal</p>
-						</a>
-					</div>
-					<div class="dev" style="text-align:center;">
-						<a href="https://github.com/tbaer-umich" target="_blank" style="text-decoration:none; color:inherit;">
-							<img src="images/TB.jpg" alt="Thomas M. Baer" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
-							<p>Thomas M. Baer</p>
-						</a>
-					</div>
-					<div class="dev" style="text-align:center;">
-						<a href="https://github.com/devloom" target="_blank" style="text-decoration:none; color:inherit;">
-							<img src="images/DL.jpg" alt="Devon Loomis PhD" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
-							<p>Devon Loomis PhD</p>
-						</a>
-					</div>
-					<!-- Add more developers here -->
-				</div>
-			</article>
-
+            <article id="developers">
+                <h2 class="major">Developers</h2>
+                <div class="devs" style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; margin-top:20px;">
+                    <div class="dev" style="text-align:center;">
+                        <a href="https://github.com/ealjamal" target="_blank" style="text-decoration:none; color:inherit;">
+                            <img src="images/EA.jpg" alt="Eddie Aljamal" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+                            <p>Eddie Aljamal</p>
+                        </a>
+                    </div>
+                    <div class="dev" style="text-align:center;">
+                        <a href="https://github.com/tbaer-umich" target="_blank" style="text-decoration:none; color:inherit;">
+                            <img src="images/TB.jpg" alt="Thomas M. Baer" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+                            <p>Thomas M. Baer</p>
+                        </a>
+                    </div>
+                    <div class="dev" style="text-align:center;">
+                        <a href="https://github.com/devloom" target="_blank" style="text-decoration:none; color:inherit;">
+                            <img src="images/DL.jpg" alt="Devon Loomis PhD" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
+                            <p>Devon Loomis PhD</p>
+                        </a>
+                    </div>
+                </div>
+                <p style="text-align:center; margin-top:20px;">
+                    We are still in development and improving the project, so more developers are welcome to contribute!
+                </p>
+            </article>
 
             <!-- GitHub -->
             <article id="github">
-                <h2 class="major">GitHub Repository</h2>
-                <p>View the main branch of Diff-SINDy:</p>
+                <h2 class="major">Diff-SINDy GitHub</h2>
+                <p>Diff-SINDy is still in development. The code is available below.:</p>
                 <a href="https://github.com/ealjamal/Diff-SINDy" class="button primary">GitHub Repo</a>
             </article>
 
