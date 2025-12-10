@@ -1,4 +1,4 @@
-# Diff-SINDy:
+# Diff-SINDy
 ## A Differentiable Framework for Discovering Partial Differential Equations from Data
 
 <p align="center">
@@ -91,6 +91,8 @@ training_losses = trainer.fit(sol_model=sol_model,
 ```
 
 ### Inference
+Inference makes heavy use PySR [Cranmer (2023)](https://arxiv.org/abs/2305.01582) of the evolutionary algorithm for symbolic regression (SR)
+https://github.com/MilesCranmer/PySR.
 
 ```
 # Define symbolic regression context with PySR by defining loss, number of iterations,
