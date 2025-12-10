@@ -95,7 +95,7 @@
             <!-- About -->
             <article id="about">
                 <h2 class="major">What is Diff-SINDy?</h2>
-                <span class="image main"><img src="images/Diff-SINDy-feature-comparison.png" alt="Diff-SINDy Hero Image" /></span>
+                <span class="image main"><img src="images/Diff-SINDy-feature-comparison.png" alt="Diff-SINDy comparison" /></span>
                 <p><strong>Diff-SINDy</strong> is a fully differentiable framework for discovering partial differential equations 
                     (PDEs) from data. Rather than constructing a large functional library, Diff-SINDy introduces 
                     a <em>derivative library</em>&mdash;a curated set of candidate temporal and spatial derivatives&mdash;
@@ -113,7 +113,7 @@
                     strategy using <strong>Sequentially Thresholded Ridge Regression (STRidge)</strong>. The overall approach 
                     requires <strong>no pretraining</strong> and enables end-to-end discovery of compact, interpretable PDEs.</p>
 
-                <span class="image main"><img src="images/Diff-SINDy-pipeline.png" alt="Diff-SINDy Hero Image" /></span>
+                <span class="image main"><img src="images/Diff-SINDy-pipeline.png" alt="Diff-SINDy pipeline" /></span>
                 <p>Suppose you have an <em>unknown</em>&mdash;PDE:</p>
 
                 <p>
@@ -184,6 +184,11 @@
                 without PDE loss at first) is recommended.
                 </p>
 
+                <span class="image main"><img src="images/Diff_SINDy_results.png" alt="Diff-SINDy results" /></span>
+                <p>Diff-SINDy was preliminarly tested on three PDEs: the homogeneous heat equation, the wave equation
+                   and Burgers' equation. As shown in the table above, Diff-SINDy discovers these PDEs from only the data
+                   to an impressive accuracy after being trained for on 30 minutes on 1 GPU with little memory overhead.
+                </p>
             </article>
 
             <!-- Developers -->
